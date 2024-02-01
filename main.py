@@ -1,13 +1,15 @@
 import logging
 from aiogram import Bot, Dispatcher, executor, types
 from aiogram.types.message import ContentTypes, Message
+import aiohttp
 
 import config as cfg
 import markups as nav
 
 logging.basicConfig(level=logging.INFO)
 
-bot = Bot(token=cfg.TOKEN)
+PROXY_URL = 'http://proxy.server:3128'
+bot = Bot(token=cfg.TOKEN, proxy=PROXY_URL)
 dp = Dispatcher(bot)
 
 @dp.message_handler(commands=['start'])
