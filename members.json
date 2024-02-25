@@ -1,0 +1,22 @@
+{
+  "members": [
+    {
+      "name": "Иванов Иван Иванович",
+      "year": 2010,
+      "faculty": "Faculty of Information Technology - Software Engineering",
+      "email": "ivanov@example.com"
+    },
+    {
+      "name": "Петров Петр Петрович",
+      "year": 2012,
+      "faculty": "Faculty of Economics and Management - Management",
+      "email": "petrov@example.com"
+    },
+    {
+      "name": "Сидорова Анна Ивановна",
+      "year": 2015,
+      "faculty": "Faculty of Foreign Languages - English Language and Translation Studies",
+      "email": "sidorova@example.com"
+    }
+  ]
+}
