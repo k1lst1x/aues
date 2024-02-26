@@ -23,7 +23,10 @@ BackMenu.insert(btnBack)
 
 #кнопки назад
 btnBentr = InlineKeyboardButton(text="Назад", callback_data="bentr")
-#btnBalum = InlineKeyboardButton(text="Назад", callback_data="balum")
+btnBalum = InlineKeyboardButton(text="Назад", callback_data="balum")
+BalumMenu = InlineKeyboardMarkup(row_width=1)
+BalumMenu.insert(btnBalum)
+BalumMenu.insert(btnBack)
 
 btnBbac = InlineKeyboardButton(text="Назад", callback_data="bbac")
 BbacMenu = InlineKeyboardMarkup(row_width=1)

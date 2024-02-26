@@ -137,7 +137,7 @@ async def unt(callback: types.CallbackQuery):
 @dp.callback_query_handler(text="faq")
 async def faq(callback: types.CallbackQuery):
   await bot.delete_message(callback.from_user.id, callback.message.message_id)
-  await bot.send_message(callback.from_user.id, uni_bot_data["alumni_club"]["FAQ"], parse_mode="Markdown", reply_markup=nav.BackMenu)
+  await bot.send_message(callback.from_user.id, uni_bot_data["alumni_club"]["FAQ"], parse_mode="Markdown", reply_markup=nav.BalumMenu)
 
 @dp.callback_query_handler(text="club")
 async def club(callback: types.CallbackQuery):
@@ -189,7 +189,7 @@ async def state1(message: types.Message, state: FSMContext):
   members_data["members"].append(new_member)
   with open("members.json", "w", encoding='utf-8') as json_file:
     json.dump(members_data, json_file, indent = 2, ensure_ascii=False)
-  await message.answer(f"Форма успешно заполнена!\nФИО: {name}\nГод окончания: {year}\nФакультет-направление: {fac}\nПочта: {mail}\n\n{link}", reply_markup=nav.BackMenu)
+  await message.answer(f"Форма успешно заполнена!\nФИО: {name}\nГод окончания: {year}\nФакультет-направление: {fac}\nПочта: {mail}\n\n{link}", reply_markup=nav.BalumMenu)
   await state.finish()
 
 #кнопки для бакалавриата
