@@ -71,6 +71,15 @@ AlumMenu.insert(btnFAQ)
 AlumMenu.insert(btnClub)
 AlumMenu.insert(btnBack)
 
+#кнопки да/нет для alumni club
+btnYesAlum = InlineKeyboardButton(text="Да", callback_data="yalum")
+btnNoAlum = InlineKeyboardButton(text="Нет", callback_data="nalum")
+YNAlumMenu= InlineKeyboardMarkup(row_width=1)
+YNAlumMenu.insert(btnYesAlum)
+YNAlumMenu.insert(btnNoAlum)
+YNAlumMenu.insert(btnBalum)
+YNAlumMenu.insert(btnBack)
+
 #меню для бакалавриата
 btnBac1 = InlineKeyboardButton(text="Образовательные программы", callback_data="bac1")
 btnBac2 = InlineKeyboardButton(text="Правила приема", callback_data="bac2")
