@@ -100,12 +100,12 @@ async def empl(callback: types.CallbackQuery):
   await bot.send_message(callback.from_user.id, uni_bot_data["general_info"]["tech_works"], reply_markup=nav.BackMenu)
 
 @dp.callback_query_handler(text="appl")
-async def alum(callback: types.CallbackQuery):
+async def appl(callback: types.CallbackQuery):
   await bot.delete_message(callback.from_user.id, callback.message.message_id)
   await bot.send_message(callback.from_user.id, uni_bot_data["general_info"]["tech_works"], reply_markup=nav.BackMenu)
 
 @dp.callback_query_handler(text="qans")
-async def alum(callback: types.CallbackQuery):
+async def qans(callback: types.CallbackQuery):
   await bot.delete_message(callback.from_user.id, callback.message.message_id)
   await bot.send_message(callback.from_user.id, uni_bot_data["general_info"]["tech_works"], reply_markup=nav.BackMenu)
 
