@@ -6,7 +6,6 @@ from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters import Command
 import pytz
 import datetime
-import aiohttp
 import json
 
 import config as cfg
@@ -15,9 +14,10 @@ from states import register
 
 logging.basicConfig(level=logging.INFO)
 
-PROXY_URL = 'http://proxy.server:3128'
+#PROXY_URL = 'http://proxy.server:3128'
 storage = MemoryStorage()
-bot = Bot(token=cfg.TOKEN, proxy=PROXY_URL)
+#bot = Bot(token=cfg.TOKEN, proxy=PROXY_URL)
+bot = Bot(token=cfg.TOKEN)
 dp = Dispatcher(bot, storage=storage)
 
 with open("info.json", "r") as json_file:
@@ -34,7 +34,12 @@ async def send_welcome(message: types.Message):
 @dp.callback_query_handler(text="info")
 async def info(callback: types.CallbackQuery):
   await bot.delete_message(callback.from_user.id, callback.message.message_id)
-  await bot.send_message(callback.from_user.id, uni_bot_data["general_info"]["contacts"], reply_markup=nav.BackMenu)
+  await bot.send_message(callback.from_user.id, uni_bot_data["general_info"]["contacts"], parse_mode="Markdown", reply_markup=nav.BackMenu)
+
+@dp.callback_query_handler(text="social")
+async def social(callback: types.CallbackQuery):
+  await bot.delete_message(callback.from_user.id, callback.message.message_id)
+  await bot.send_message(callback.from_user.id, uni_bot_data["general_info"]["social"], parse_mode="Markdown", reply_markup=nav.BackMenu)
 
 @dp.callback_query_handler(text="back")
 async def back(callback: types.CallbackQuery):
@@ -58,6 +63,11 @@ async def bbac(callback: types.CallbackQuery):
   await bot.delete_message(callback.from_user.id, callback.message.message_id)
   await bot.send_message(callback.from_user.id, "Бакалавриат", reply_markup=nav.BacMenu)
 
+@dp.callback_query_handler(text="bbacfaq")
+async def bbacfaq(callback: types.CallbackQuery):
+  await bot.delete_message(callback.from_user.id, callback.message.message_id)
+  await bot.send_message(callback.from_user.id, "Вопрос-ответ", reply_markup=nav.BacFAQMenu)
+
 @dp.callback_query_handler(text="bmag")
 async def bmag(callback: types.CallbackQuery):
   await bot.delete_message(callback.from_user.id, callback.message.message_id)
@@ -78,6 +88,21 @@ async def bUNT(callback: types.CallbackQuery):
   await bot.delete_message(callback.from_user.id, callback.message.message_id)
   await bot.send_message(callback.from_user.id, "Курсы ЕНТ", reply_markup=nav.UNTMenu)
 
+@dp.callback_query_handler(text="bstud")
+async def bStud(callback: types.CallbackQuery):
+  await bot.delete_message(callback.from_user.id, callback.message.message_id)
+  await bot.send_message(callback.from_user.id, "Студентам", reply_markup=nav.StudMenu)
+
+@dp.callback_query_handler(text="bstudfaq")
+async def bstudfaq(callback: types.CallbackQuery):
+  await bot.delete_message(callback.from_user.id, callback.message.message_id)
+  await bot.send_message(callback.from_user.id, "Вопрос-ответ", reply_markup=nav.StudFAQMenu)
+
+@dp.callback_query_handler(text="bstudinst")
+async def bstudinst(callback: types.CallbackQuery):
+  await bot.delete_message(callback.from_user.id, callback.message.message_id)
+  await bot.send_message(callback.from_user.id, "📞🌟 Контакты институтов:", reply_markup=nav.InstMenu)
+
 #основное меню
 @dp.callback_query_handler(text="entr")
 async def entr(callback: types.CallbackQuery):
@@ -92,7 +117,7 @@ async def alum(callback: types.CallbackQuery):
 @dp.callback_query_handler(text="stud")
 async def stud(callback: types.CallbackQuery):
   await bot.delete_message(callback.from_user.id, callback.message.message_id)
-  await bot.send_message(callback.from_user.id, uni_bot_data["general_info"]["tech_works"], reply_markup=nav.BackMenu)
+  await bot.send_message(callback.from_user.id, "Студентам", reply_markup=nav.StudMenu)
 
 @dp.callback_query_handler(text="empl")
 async def empl(callback: types.CallbackQuery):
@@ -109,7 +134,7 @@ async def qans(callback: types.CallbackQuery):
   await bot.delete_message(callback.from_user.id, callback.message.message_id)
   await bot.send_message(callback.from_user.id, uni_bot_data["general_info"]["tech_works"], reply_markup=nav.BackMenu)
 
-#кнопки поступающим
+#кнопки абитуриентам
 @dp.callback_query_handler(text="bac")
 async def bac(callback: types.CallbackQuery):
   await bot.delete_message(callback.from_user.id, callback.message.message_id)
@@ -134,6 +159,69 @@ async def coll(callback: types.CallbackQuery):
 async def unt(callback: types.CallbackQuery):
   await bot.delete_message(callback.from_user.id, callback.message.message_id)
   await bot.send_message(callback.from_user.id, "Курсы ЕНТ", reply_markup=nav.UNTMenu)
+
+#кнопки студентам
+@dp.callback_query_handler(text="stud3")
+async def stud3(callback: types.CallbackQuery):
+  await bot.delete_message(callback.from_user.id, callback.message.message_id)
+  await bot.send_message(callback.from_user.id, "📞🌟 Контакты институтов:", reply_markup=nav.InstMenu)
+
+@dp.callback_query_handler(text="stud7")
+async def inst7(callback: types.CallbackQuery):
+  await bot.delete_message(callback.from_user.id, callback.message.message_id)
+  await bot.send_message(callback.from_user.id, uni_bot_data["student_info"]["ACC"], parse_mode="Markdown", reply_markup=nav.BstudMenu)
+
+@dp.callback_query_handler(text="stud8")
+async def stud8(callback: types.CallbackQuery):
+  await bot.delete_message(callback.from_user.id, callback.message.message_id)
+  await bot.send_message(callback.from_user.id, "Вопрос-ответ", reply_markup=nav.StudFAQMenu)
+
+#кнопки институтов студентам
+@dp.callback_query_handler(text="inst1")
+async def inst1(callback: types.CallbackQuery):
+  await bot.delete_message(callback.from_user.id, callback.message.message_id)
+  await bot.send_message(callback.from_user.id, uni_bot_data["student_info"]["inst"]["INHS"], parse_mode="Markdown", reply_markup=nav.BstudInstMenu)
+
+@dp.callback_query_handler(text="inst2")
+async def inst2(callback: types.CallbackQuery):
+  await bot.delete_message(callback.from_user.id, callback.message.message_id)
+  await bot.send_message(callback.from_user.id, uni_bot_data["student_info"]["inst"]["IAIT"], parse_mode="Markdown", reply_markup=nav.BstudInstMenu)
+
+@dp.callback_query_handler(text="inst3")
+async def inst3(callback: types.CallbackQuery):
+  await bot.delete_message(callback.from_user.id, callback.message.message_id)
+  await bot.send_message(callback.from_user.id, uni_bot_data["student_info"]["inst"]["ICSE"], parse_mode="Markdown", reply_markup=nav.BstudInstMenu)
+
+@dp.callback_query_handler(text="inst4")
+async def inst4(callback: types.CallbackQuery):
+  await bot.delete_message(callback.from_user.id, callback.message.message_id)
+  await bot.send_message(callback.from_user.id, uni_bot_data["student_info"]["inst"]["IEGT"], parse_mode="Markdown", reply_markup=nav.BstudInstMenu)
+
+#кнопки вопрос-ответ студентам
+@dp.callback_query_handler(text="studfaq1")
+async def studfaq1(callback: types.CallbackQuery):
+  await bot.delete_message(callback.from_user.id, callback.message.message_id)
+  await bot.send_message(callback.from_user.id, uni_bot_data["QADataset"]["student"]["cson_kormiliec"], parse_mode="Markdown", reply_markup=nav.BstudFAQMenu)
+
+@dp.callback_query_handler(text="studfaq2")
+async def studfaq2(callback: types.CallbackQuery):
+  await bot.delete_message(callback.from_user.id, callback.message.message_id)
+  await bot.send_message(callback.from_user.id, uni_bot_data["QADataset"]["student"]["cson_mnogodetnaya_semia"], parse_mode="Markdown", reply_markup=nav.BstudFAQMenu)
+
+@dp.callback_query_handler(text="studfaq3")
+async def studfaq3(callback: types.CallbackQuery):
+  await bot.delete_message(callback.from_user.id, callback.message.message_id)
+  await bot.send_message(callback.from_user.id, uni_bot_data["QADataset"]["student"]["voenkomat"], parse_mode="Markdown", reply_markup=nav.BstudFAQMenu)
+
+@dp.callback_query_handler(text="studfaq4")
+async def studfaq4(callback: types.CallbackQuery):
+  await bot.delete_message(callback.from_user.id, callback.message.message_id)
+  await bot.send_message(callback.from_user.id, uni_bot_data["QADataset"]["student"]["akadem_otpusk_docs"], parse_mode="Markdown", reply_markup=nav.BstudFAQMenu)
+
+@dp.callback_query_handler(text="studfaq5")
+async def studfaq5(callback: types.CallbackQuery):
+  await bot.delete_message(callback.from_user.id, callback.message.message_id)
+  await bot.send_message(callback.from_user.id, uni_bot_data["QADataset"]["student"]["otchislenie_iz_aues"], parse_mode="Markdown", reply_markup=nav.BstudFAQMenu)
 
 #кнопки выпускникам
 @dp.callback_query_handler(text="faq")
@@ -254,6 +342,32 @@ async def bac5(callback: types.CallbackQuery):
 async def bac6(callback: types.CallbackQuery):
   await bot.delete_message(callback.from_user.id, callback.message.message_id)
   await bot.send_message(callback.from_user.id, uni_bot_data["entrants"]["bachelor"]["tuition_fees"], parse_mode="Markdown", reply_markup=nav.BbacMenu)
+
+@dp.callback_query_handler(text="bac7")
+async def bac7(callback: types.CallbackQuery):
+  await bot.delete_message(callback.from_user.id, callback.message.message_id)
+  await bot.send_message(callback.from_user.id, "Вопрос-ответ", reply_markup=nav.BacFAQMenu)
+
+#кнопки вопрос-ответ бакалавриату
+@dp.callback_query_handler(text="bacfaq1")
+async def bacfaq1(callback: types.CallbackQuery):
+  await bot.delete_message(callback.from_user.id, callback.message.message_id)
+  await bot.send_message(callback.from_user.id, uni_bot_data["QADataset"]["bachelor"]["costPerCreditExtraSemester"], parse_mode="Markdown", reply_markup=nav.BbacFAQMenu)
+
+@dp.callback_query_handler(text="bacfaq2")
+async def bacfaq2(callback: types.CallbackQuery):
+  await bot.delete_message(callback.from_user.id, callback.message.message_id)
+  await bot.send_message(callback.from_user.id, uni_bot_data["QADataset"]["bachelor"]["allowedCreditsExtraSemester"], parse_mode="Markdown", reply_markup=nav.BbacFAQMenu)
+
+@dp.callback_query_handler(text="bacfaq3")
+async def bacfaq3(callback: types.CallbackQuery):
+  await bot.delete_message(callback.from_user.id, callback.message.message_id)
+  await bot.send_message(callback.from_user.id, uni_bot_data["QADataset"]["bachelor"]["GPAforCourseTransition"], parse_mode="Markdown", reply_markup=nav.BbacFAQMenu)
+
+@dp.callback_query_handler(text="bacfaq4")
+async def bacfaq4(callback: types.CallbackQuery):
+  await bot.delete_message(callback.from_user.id, callback.message.message_id)
+  await bot.send_message(callback.from_user.id, uni_bot_data["QADataset"]["bachelor"]["dismissalDueToDebt"], parse_mode="Markdown", reply_markup=nav.BbacFAQMenu)
 
 #кнопки для магистратуры
 @dp.callback_query_handler(text="mag1")
